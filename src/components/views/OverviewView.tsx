@@ -20,10 +20,19 @@ import { GRADE_COLORS, STATUS_COLORS, StandardUnit } from '../../types/project';
 import { UNIT_COLORS, STANDARD_UNITS } from '../../config/units';
 
 export const OverviewView: React.FC = () => {
-  const { data, filteredProjects, theme, setSelectedProject, updateFilters } = useDashboard();
+  const { data, filteredProjects, theme, setSelectedProject, updateFilters, isLoading } = useDashboard();
+
+  if (isLoading) {
+    return <EmptyState title="Đang nạp dữ liệu từ Google Sheets..." />;
+  }
 
   if (!data?.projects.length) {
-    return <EmptyState title="Đang nạp dữ liệu từ Google Sheets..." />;
+    return (
+      <EmptyState
+        title="Chưa có dữ liệu đề tài"
+        description="Không tìm thấy đề tài nào trong dữ liệu tải về từ Google Sheets hoặc bảng tính chưa có số liệu."
+      />
+    );
   }
 
   const projects = filteredProjects;
